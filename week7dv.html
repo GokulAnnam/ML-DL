@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            display: none;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Employee Details</h2>
+    <button onclick="loadXMLDoc()">Get Employee Details</button>
+    <br><br>
+    <table id="empTable">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Title</th>
+            <th>Division</th>
+            <th>Building</th>
+            <th>Room</th>
+        </tr>
+    </table>
+
+    <script>
+        function loadXMLDoc() {
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    empDetails(this);
+                }
+            };
+            xhttp.open("GET", "employee.xml", true);
+            xhttp.send();
+        }
+
+        function empDetails(xml) {
+        let xmlDoc = xml.responseXML;
+        let employees = xmlDoc.getElementsByTagName("employee");
+        let table = document.getElementById("empTable");
+
+        for (let i = 0; i < employees.length; i++) {
+            let row = table.insertRow();
+            row.insertCell(0).textContent = employees[i].getElementsByTagName("firstname")[0].textContent;
+            row.insertCell(1).textContent = employees[i].getElementsByTagName("lastname")[0].textContent;
+            row.insertCell(2).textContent = employees[i].getElementsByTagName("title")[0].textContent;
+            row.insertCell(3).textContent = employees[i].getElementsByTagName("division")[0].textContent;
+            row.insertCell(4).textContent = employees[i].getElementsByTagName("building")[0].textContent;
+            row.insertCell(5).textContent = employees[i].getElementsByTagName("room")[0].textContent;
+        }
+
+        table.style.display = "table";
+       }
+
+    </script>
+
+</body>
+</html>
